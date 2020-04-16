@@ -1532,7 +1532,16 @@ static int loadLabel(labelObj *label)
         }
         break;
       case(ALIGN):
-        if((label->align = getSymbol(3, MS_ALIGN_LEFT,MS_ALIGN_CENTER,MS_ALIGN_RIGHT)) == -1) return(-1);
+        if((symbol = getSymbol(4, MS_ALIGN_LEFT,MS_ALIGN_CENTER,MS_ALIGN_RIGHT,MS_BINDING)) == -1)
+          return(-1);
+        if((symbol == MS_ALIGN_LEFT)||(symbol == MS_ALIGN_CENTER)||(symbol == MS_ALIGN_RIGHT)) {
+          label->align = symbol;
+        } else {
+          if (label->bindings[MS_LABEL_BINDING_ALIGN].item != NULL)
+            msFree(label->bindings[MS_LABEL_BINDING_ALIGN].item);
+          label->bindings[MS_LABEL_BINDING_ALIGN].item = msStrdup(msyystring_buffer);
+          label->numbindings++;
+        }
         break;
       case(ANTIALIAS): /*ignore*/
         msyylex();
