@@ -314,6 +314,24 @@ static void bindLabel(layerObj *layer, shapeObj *shape, labelObj *label, int dra
       bindIntegerAttribute(&label->offsety, shape->values[label->bindings[MS_LABEL_BINDING_OFFSET_Y].index]);
     }
 
+    if(label->bindings[MS_LABEL_BINDING_ALIGN].index != -1) {
+      int tmpAlign = 0;
+      bindIntegerAttribute(&tmpAlign, shape->values[label->bindings[MS_LABEL_BINDING_ALIGN].index]);
+      if(tmpAlign != 0) { /* is this test sufficient? */
+        label->align = tmpAlign;
+      } else { /* Integer binding failed, look for strings like cc, ul, lr, etc... */
+        if(strlen(shape->values[label->bindings[MS_LABEL_BINDING_ALIGN].index]) >= 4) {
+          char *va = shape->values[label->bindings[MS_LABEL_BINDING_ALIGN].index];
+          if(!strncasecmp(va,"center",5))
+            label->align = MS_ALIGN_CENTER;
+          else if(!strncasecmp(va,"left",4))
+            label->align = MS_ALIGN_LEFT;
+          else if(!strncasecmp(va,"right",5))
+            label->align = MS_ALIGN_RIGHT;
+        }
+      }
+    }
+
     if(label->bindings[MS_LABEL_BINDING_POSITION].index != -1) {
       int tmpPosition = 0;
       bindIntegerAttribute(&tmpPosition, shape->values[label->bindings[MS_LABEL_BINDING_POSITION].index]);
