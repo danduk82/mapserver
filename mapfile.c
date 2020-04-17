@@ -1647,7 +1647,7 @@ static int loadLabel(labelObj *label)
       case(OFFSET):
         if((symbol = getSymbol(2, MS_NUMBER,MS_BINDING)) == -1) return(MS_FAILURE);
         if(symbol == MS_NUMBER)
-          label->offsetx = (double) msyynumber;
+          label->offsetx = (int) msyynumber;
         else {
           if (label->bindings[MS_LABEL_BINDING_OFFSET_X].item != NULL)
             msFree(label->bindings[MS_LABEL_BINDING_OFFSET_X].item);
@@ -1657,7 +1657,7 @@ static int loadLabel(labelObj *label)
 
         if((symbol = getSymbol(2, MS_NUMBER,MS_BINDING)) == -1) return(MS_FAILURE);
         if(symbol == MS_NUMBER)
-          label->offsety = (double) msyynumber;
+          label->offsety = (int) msyynumber;
         else {
           if (label->bindings[MS_LABEL_BINDING_OFFSET_Y].item != NULL)
             msFree(label->bindings[MS_LABEL_BINDING_OFFSET_Y].item);
